@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Dynamic colors managed by ThemeContext.jsx */
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(255, 255, 255, 0.05);
+  --secondary-foreground: var(--foreground);
+  --muted: rgba(255, 255, 255, 0.1);
+  --accent: rgba(59, 130, 246, 0.1);
+  --accent-foreground: var(--foreground);
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --radius: 0.5rem;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  
+  --font-sans: "IBM Plex Sans", "IBM Plex Sans JP", sans-serif;
+  --font-heading: "IBM Plex Sans", "IBM Plex Sans JP", sans-serif;
+}
+
+.dark {
+  --border: rgba(255, 255, 255, 0.1);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem; /* Matches navbar height + padding */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-color: var(--border);
+  outline: none !important;
+}
+
+*:focus {
+  outline: none !important;
+}
+
+/* Remove blue highlight on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--bg-gradient);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  position: relative;
+  transition: color 0.5s ease;
+}
+
+/* Theme Transition Animation */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg-gradient);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0);
+  transform-origin: center;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.theme-transitioning::before {
+  opacity: 1;
+  transform: scale(2.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    transition: none;
+  }
+  body {
+    transition: none;
+  }
+}
+
+/* Color Drip Background - Now in ColorDripBackground.jsx component */
+
+
+
+/* Aurora Background Layers Removed - Using Simple Gradient */
+
+@keyframes aurora-pulse {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.1) translate(-2%, 2%); }
+}
+
+@keyframes aurora-drift {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.1) rotate(3deg); }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+
+
+/* Utilities */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 0.5rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+.gap-8 { gap: 2rem; }
+.gap-12 { gap: 3rem; }
+
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.text-center { text-align: center; }
+.w-full { width: 100%; }
+.min-h-screen { min-height: 100vh; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.overflow-hidden { overflow: hidden; }
+.z-10 { z-index: 10; }
+.z-50 { z-index: 50; }
+
+.ml-2 { margin-left: 0.5rem; }
+.mr-2 { margin-right: 0.5rem; }
+.h-4 { height: 1rem; }
+.w-4 { width: 1rem; }
+.h-5 { height: 1.25rem; }
+.w-5 { width: 1.25rem; }
+.h-6 { height: 1.5rem; }
+.w-6 { width: 1.5rem; }
+.p-4 { padding: 1rem; }
+
+.text-sm { font-size: 0.875rem; }
+.text-base { font-size: 1rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
+.text-3xl { font-size: 1.875rem; }
+.text-4xl { font-size: 2.25rem; }
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+
+.text-muted-foreground { color: var(--muted-foreground); }
+.text-primary { color: var(--primary); }
+
+/* Components */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+  font-weight: 500;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  font-family: var(--font-sans);
+  gap: 0.5rem;
+}
+
+/* Button Sizes */
+.btn-md {
+  padding: 0 1.25rem;
+  font-size: 0.875rem;
+  height: 2.75rem;
+}
+
+.btn-lg {
+  padding: 0 2.25rem;
+  font-size: 1rem;
+  height: 3.5rem;
+}
+
+.btn-sm {
+  padding: 0 0.875rem;
+  font-size: 0.75rem;
+  height: 2.25rem;
+}
+
+.btn-primary {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  border-color: var(--btn-primary-hover-color);
+  color: var(--btn-primary-hover-color);
+  transform: translateY(-2px);
+  box-shadow: var(--button-hover-shadow);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  background-color: transparent;
+  border-color: var(--border);
+  color: var(--button-text);
+}
+
+.btn-outline:hover {
+  background-color: transparent;
+  border-color: var(--btn-primary-hover-color);
+  color: var(--btn-primary-hover-color);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--button-text);
+  border: none;
+}
+
+.btn-ghost:hover {
+  background-color: var(--button-hover);
+  color: #ffffff;
+}
+
+.btn-white-primary {
+  background-color: var(--button-text);
+  color: var(--bg-base);
+}
+
+.btn-white-primary:hover {
+  background-color: transparent;
+  border-color: var(--btn-primary-hover-color);
+  color: var(--btn-primary-hover-color);
+  transform: translateY(-2px);
+  box-shadow: var(--button-hover-shadow);
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--foreground);
+}
+
+/* Shared Components */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* Hide Scrollbar Globally but allow scrolling */
+html {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+html::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
