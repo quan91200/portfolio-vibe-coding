@@ -14,7 +14,7 @@ const randomColor = () => {
  * Particle class - handles individual points in an explosion or trail
  */
 class Particle {
-  constructor(x, y, vx, vy, size, color, life, isTrail = false, isSmoke = false) {
+  constructor(x, y, vx, vy, size, color, life, isTrail = false, isSmoke = false, enableGlow = true) {
     this.x = x;
     this.y = y;
     this.vx = vx;
@@ -27,6 +27,7 @@ class Particle {
     this.isSmoke = isSmoke;
     this.gravity = isTrail || isSmoke ? 0.02 : 0.05;
     this.friction = isSmoke ? 0.95 : 0.98;
+    this.enableGlow = enableGlow;
   }
 
   update(dt) {
@@ -49,7 +50,7 @@ class Particle {
       ctx.fillStyle = gradient;
     } else {
       ctx.fillStyle = this.color;
-      if (!this.isTrail) {
+      if (!this.isTrail && this.enableGlow) {
         ctx.shadowBlur = 10;
         ctx.shadowColor = this.color;
       }
@@ -58,7 +59,7 @@ class Particle {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
-    ctx.shadowBlur = 0;
+    if (this.enableGlow) ctx.shadowBlur = 0;
     ctx.globalAlpha = 1;
   }
 
@@ -78,7 +79,10 @@ class Firework {
     this.targetY = targetY;
     this.color = color;
     this.onExplode = onExplode;
+    this.color = color;
+    this.onExplode = onExplode;
     this.trailFadeTime = trailFadeTime;
+    this.enableGlow = typeof window !== 'undefined' && window.innerWidth > 768;
 
     const angle = Math.atan2(targetY - startY, targetX - startX);
     const distance = Math.sqrt((targetX - startX) ** 2 + (targetY - startY) ** 2);
@@ -101,11 +105,11 @@ class Firework {
     this.smokeTimer += dt;
     if (this.smokeTimer > 0.05) {
       // Smoke particles: use 20% of trail fade time
-      this.trail.push(new Particle(this.x, this.y, random(-0.5, 0.5), random(0.5, 1.5), random(4, 8), '#ffffff', this.trailFadeTime * 0.2, false, true));
+      this.trail.push(new Particle(this.x, this.y, random(-0.5, 0.5), random(0.5, 1.5), random(4, 8), '#ffffff', this.trailFadeTime * 0.2, false, true, false)); // No glow for smoke
       this.smokeTimer = 0;
     }
     // Trail particles: use 15% of trail fade time for quick trail
-    this.trail.push(new Particle(this.x, this.y, 0, 0, 2, this.color, this.trailFadeTime * 0.15, true));
+    this.trail.push(new Particle(this.x, this.y, 0, 0, 2, this.color, this.trailFadeTime * 0.15, true, false, this.enableGlow));
 
     // Check if reached target
     if (this.y <= this.targetY) {
@@ -121,12 +125,14 @@ class Firework {
     this.trail.forEach(p => p.draw(ctx));
     if (!this.exploded) {
       ctx.fillStyle = '#fff';
-      ctx.shadowBlur = 15;
-      ctx.shadowColor = this.color;
+      if (this.enableGlow) {
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = this.color;
+      }
       ctx.beginPath();
       ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
       ctx.fill();
-      ctx.shadowBlur = 0;
+      if (this.enableGlow) ctx.shadowBlur = 0;
     }
   }
 
@@ -175,7 +181,9 @@ const FireworksBackground = () => {
 
     const imgData = oCtx.getImageData(0, 0, offscreen.width, offscreen.height);
     const newParticles = [];
-    const step = 6;
+    const isMobile = window.innerWidth < 768;
+    // Reduce particle count on mobile by increasing step
+    const step = isMobile ? 10 : 6;
 
     for (let i = 0; i < imgData.width; i += step) {
       for (let j = 0; j < imgData.height; j += step) {
@@ -185,7 +193,8 @@ const FireworksBackground = () => {
           const py = y + (j - offscreen.height / 2);
           const vx = (Math.random() - 0.5) * 2;
           const vy = (Math.random() - 0.5) * 2;
-          newParticles.push(new Particle(px, py, vx, vy, 2.5, color, fadeTime));
+          // No glow for text particles on mobile
+          newParticles.push(new Particle(px, py, vx, vy, 2.5, color, fadeTime, false, false, !isMobile));
         }
       }
     }
@@ -206,11 +215,13 @@ const FireworksBackground = () => {
         explosionParticles.push(...createTextBurst(ctx, char, ex, ey, col, fadeTime));
       } else {
         // Normal burst
-        const count = 40;
+        const isMobile = window.innerWidth < 768;
+        const count = isMobile ? 20 : 40;
+        const enableGlow = !isMobile;
         for (let i = 0; i < count; i++) {
           const angle = (i / count) * Math.PI * 2;
           const speed = random(2, 6);
-          explosionParticles.push(new Particle(ex, ey, Math.cos(angle) * speed, Math.sin(angle) * speed, 2.5, col, fadeTime));
+          explosionParticles.push(new Particle(ex, ey, Math.cos(angle) * speed, Math.sin(angle) * speed, 2.5, col, fadeTime, false, false, enableGlow));
         }
       }
 

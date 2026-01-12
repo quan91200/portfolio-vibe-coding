@@ -46,6 +46,10 @@ const Star = styled.div`
     : 'drop-shadow(0 0 4px rgba(30, 58, 138, 0.6))'};
   animation: ${meteorAnimation} 3000ms ease-in-out infinite;
   
+  @media (max-width: 768px) {
+    filter: none;
+  }
+  
   &::before {
     content: '';
     position: absolute;
