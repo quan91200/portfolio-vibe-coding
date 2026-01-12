@@ -90,7 +90,11 @@
     "theme_simple": "Tối giản",
     "theme_simple_desc": "Thiết kế mộc mạc",
     "theme_vibrant": "Rực rỡ",
-    "theme_vibrant_desc": "Màu sắc nổi bật"
+    "theme_vibrant_desc": "Màu sắc nổi bật",
+    "modal_blur": "Độ mờ nền",
+    "modal_blur_desc": "Điều chỉnh mức độ nhòe nền",
+    "modal_opacity": "Độ trong suốt",
+    "modal_opacity_desc": "Điều chỉnh độ đậm nhạt nền"
   },
   "hero": {
     "available": "Đang sẵn sàng cho các dự án mới",

@@ -7,7 +7,7 @@
  * Adding new settings requires NO changes to modal core logic.
  */
 
-import { SETTING_TYPES, VIEW_IDS } from '../../constants/settings';
+import { SETTING_TYPES, VIEW_IDS } from '../../constants/settings'
 
 /**
  * Settings View Configuration
@@ -360,7 +360,7 @@ export const settingsViews = {
         description: 'common.light_mode_desc',
         value: 'light',
         group: 'theme',
-        icon: 'sun',
+        icon: 'sun'
       },
       {
         id: 'theme-dark',
@@ -369,8 +369,8 @@ export const settingsViews = {
         description: 'common.dark_mode_desc',
         value: 'dark',
         group: 'theme',
-        icon: 'moon',
-      },
+        icon: 'moon'
+      }
     ],
   },
 
@@ -541,7 +541,7 @@ export const settingsViews = {
         label: 'settings.animations',
         description: 'settings.animations_desc',
         settingKey: 'advanced.animations',
-        defaultValue: true,
+        defaultValue: true
       },
       {
         id: 'reduce-motion',
@@ -549,33 +549,59 @@ export const settingsViews = {
         label: 'settings.reduce_motion',
         description: 'settings.reduce_motion_desc',
         settingKey: 'advanced.reduceMotion',
-        defaultValue: false,
+        defaultValue: false
       },
-    ],
-  },
-};
+      {
+        id: 'advanced-divider',
+        type: SETTING_TYPES.DIVIDER
+      },
+      {
+        id: 'modal-blur',
+        type: SETTING_TYPES.SLIDER,
+        label: 'settings.modal_blur',
+        description: 'settings.modal_blur_desc',
+        min: 0,
+        max: 20,
+        step: 1,
+        unit: 'px',
+        settingKey: 'advanced.modalBlur'
+      },
+      {
+        id: 'modal-opacity',
+        type: SETTING_TYPES.SLIDER,
+        label: 'settings.modal_opacity',
+        description: 'settings.modal_opacity_desc',
+        min: 0,
+        max: 1,
+        step: 0.05,
+        unit: '',
+        settingKey: 'advanced.modalOpacity'
+      }
+    ]
+  }
+}
 
 /**
  * Get a view configuration by ID
  */
 export const getView = (viewId, context = null) => {
-  const view = settingsViews[viewId];
-  if (!view) return null;
+  const view = settingsViews[viewId]
+  if (!view) return null
 
   if (view.dynamic && view.getItems) {
     return {
       ...view,
       items: view.getItems(context),
-    };
+    }
   }
 
-  return view;
-};
+  return view
+}
 
 /**
  * Get all items for a specific view
  */
 export const getViewItems = (viewId, context = null) => {
-  const view = getView(viewId, context);
-  return view ? view.items : [];
-};
+  const view = getView(viewId, context)
+  return view ? view.items : []
+}

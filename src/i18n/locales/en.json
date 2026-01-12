@@ -90,7 +90,11 @@
     "theme_simple": "Simple",
     "theme_simple_desc": "Minimalist design",
     "theme_vibrant": "Vibrant",
-    "theme_vibrant_desc": "Colorful and bold"
+    "theme_vibrant_desc": "Colorful and bold",
+    "modal_blur": "Modal Blur",
+    "modal_blur_desc": "Adjust background blur intensity",
+    "modal_opacity": "Modal Opacity",
+    "modal_opacity_desc": "Adjust background transparency"
   },
   "hero": {
     "available": "Available for new projects",

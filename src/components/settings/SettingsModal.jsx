@@ -1,13 +1,13 @@
-import React, { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import Modal from '@/components/ui/Modal';
-import ViewRenderer from './ViewRenderer';
-import { useViewNavigation } from './useViewNavigation';
-import { getView } from './settingsConfig';
-import { VIEW_IDS } from '../../constants/settings';
-import { useTheme } from '@/context/ThemeContext';
-import { useBackground } from '@/context/BackgroundContext';
-import { useSettings } from '@/context/SettingsContext';
+import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
+import Modal from '@/components/ui/Modal'
+import ViewRenderer from './ViewRenderer'
+import { useViewNavigation } from './useViewNavigation'
+import { getView } from './settingsConfig'
+import { VIEW_IDS } from '../../constants/settings'
+import { useTheme } from '@/context/ThemeContext'
+import { useBackground } from '@/context/BackgroundContext'
+import { useSettings } from '@/context/SettingsContext'
 
 /**
  * Settings Modal
@@ -31,8 +31,8 @@ import { useSettings } from '@/context/SettingsContext';
  * - onClose: function
  */
 const SettingsModal = ({ isOpen, onClose }) => {
-  const { t } = useTranslation();
-  const { theme, setThemeMode } = useTheme();
+  const { t } = useTranslation()
+  const { theme, setThemeMode } = useTheme()
   const {
     backgroundType,
     switchBackground,
@@ -44,8 +44,8 @@ const SettingsModal = ({ isOpen, onClose }) => {
     updateSnowfallSettings,
     fireworksSettings,
     updateFireworksSettings,
-  } = useBackground();
-  const { settings, updateSetting } = useSettings();
+  } = useBackground()
+  const { settings, updateSetting } = useSettings()
 
   const {
     currentView,
@@ -54,14 +54,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
     goBack,
     reset,
     navigationDirection,
-  } = useViewNavigation(VIEW_IDS.ROOT);
+  } = useViewNavigation(VIEW_IDS.ROOT)
 
   // Reset to root view when modal closes
   React.useEffect(() => {
     if (!isOpen) {
-      reset();
+      reset()
     }
-  }, [isOpen, reset]);
+  }, [isOpen, reset])
 
   // Aggregate all current values for the view renderer
   const currentValues = useMemo(() => ({
@@ -75,15 +75,15 @@ const SettingsModal = ({ isOpen, onClose }) => {
     advanced: settings.advanced || {},
     toastPosition: settings.toasts?.position || 'top-right',
     toastTheme: settings.toasts?.theme || 'default',
-    toasts: settings.toasts || {},
-  }), [backgroundType, theme, settings, meteorShowerSettings, colorDripSettings, snowfallSettings, fireworksSettings]);
+    toasts: settings.toasts || {}
+  }), [backgroundType, theme, settings, meteorShowerSettings, colorDripSettings, snowfallSettings, fireworksSettings])
 
   /**
    * Handle navigation to a new view
    */
   const handleNavigate = (viewId, context = null) => {
-    navigateTo(viewId, context);
-  };
+    navigateTo(viewId, context)
+  }
 
   /**
    * Handle value changes from settings items
@@ -91,39 +91,47 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const handleValueChange = (key, value) => {
     // Route to appropriate context based on key
     if (key === 'background') {
-      switchBackground(value);
+      switchBackground(value)
     } else if (key === 'theme') {
-      setThemeMode(value);
+      setThemeMode(value)
     } else if (key === 'language') {
-      updateSetting('language', value);
+      updateSetting('language', value)
     } else if (key.startsWith('meteorShowerSettings.')) {
-      const settingKey = key.replace('meteorShowerSettings.', '');
-      updateMeteorShowerSettings({ [settingKey]: value });
+      const settingKey = key.replace('meteorShowerSettings.', '')
+      updateMeteorShowerSettings({ [settingKey]: value })
     } else if (key.startsWith('colorDripSettings.')) {
-      const settingKey = key.replace('colorDripSettings.', '');
-      updateColorDripSettings({ [settingKey]: value });
+      const settingKey = key.replace('colorDripSettings.', '')
+      updateColorDripSettings({ [settingKey]: value })
     } else if (key.startsWith('snowfallSettings.')) {
-      const settingKey = key.replace('snowfallSettings.', '');
-      updateSnowfallSettings({ [settingKey]: value });
+      const settingKey = key.replace('snowfallSettings.', '')
+      updateSnowfallSettings({ [settingKey]: value })
     } else if (key.startsWith('fireworksSettings.')) {
-      const settingKey = key.replace('fireworksSettings.', '');
-      updateFireworksSettings({ [settingKey]: value });
+      const settingKey = key.replace('fireworksSettings.', '')
+      updateFireworksSettings({ [settingKey]: value })
     } else if (key === 'toastPosition') {
-      updateSetting('toasts.position', value);
+      updateSetting('toasts.position', value)
     } else if (key === 'toastTheme') {
-      updateSetting('toasts.theme', value);
+      updateSetting('toasts.theme', value)
     } else {
       // Generic settings (advanced, etc.)
-      updateSetting(key, value);
+      updateSetting(key, value)
     }
-  };
+  }
 
   // Get current view configuration
-  const view = getView(currentView.viewId, currentView.context);
+  const view = getView(currentView.viewId, currentView.context)
 
   if (!view) {
-    return null;
+    return null
   }
+
+  // Get theme settings with defaults from ADVANCED
+  const modalBlur = settings.advanced?.modalBlur ?? 12
+  const modalOpacity = settings.advanced?.modalOpacity ?? 0.8
+
+  // Animation settings
+  const animations = settings.advanced?.animations ?? true
+  const reduceMotion = settings.advanced?.reduceMotion ?? false
 
   return (
     <Modal
@@ -135,6 +143,10 @@ const SettingsModal = ({ isOpen, onClose }) => {
       showBackButton={canGoBack}
       onBack={goBack}
       transitionDirection={navigationDirection}
+      blur={modalBlur}
+      opacity={modalOpacity}
+      enableAnimations={animations}
+      reduceMotion={reduceMotion}
     >
       <ViewRenderer
         view={view}
@@ -143,7 +155,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
         onValueChange={handleValueChange}
       />
     </Modal>
-  );
-};
+  )
+}
 
-export default SettingsModal;
+export default SettingsModal

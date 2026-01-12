@@ -50,7 +50,7 @@ Every React component file (JSX) must be organized in this specific order:
 
 ## 7. Multi-Language Support (i18n)
 - **Mandatory**: When adding ANY new feature, UI element, or setting, you MUST add multi-language support.
-- **Translation Files**: Add translation keys to both `en.json` and `vi.json` in the `locales` directory.
+- **Translation Files**: Add translation keys to `jp.json`, `zh.json`, `en.json` and `vi.json` in the `locales` directory.
 - **Key Structure**: Use dot-notation keys grouped by scope (e.g., `settings.fireworks`, `common.save`, `hero.welcome`).
 - **No Hardcoded Strings**: Never hardcode user-facing text in components or configuration files. Always use translation keys.
 - **Settings Config**: In `settingsConfig.js`, use translation keys for `label` and `description` fields, not literal strings.
