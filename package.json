@@ -7,7 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "memory:setup": "node .agent/scripts/setup-memory.js",
+    "memory:setup:quick": "node .agent/scripts/setup-memory.js --quick",
+    "memory:validate": "node .agent/scripts/validate-memory.js",
+    "memory:validate:verbose": "node .agent/scripts/validate-memory.js --verbose",
+    "memory:show": "cat .agent/project-memory.md"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
