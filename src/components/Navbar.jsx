@@ -91,7 +91,7 @@ const Navbar = () => {
             <Button
               variant="default"
               size="sm"
-              href="https://s3.topcv.vn/data-cvs/topcv-cv-uploads/20ac31da7fabcd3a7f0de8655ca7b344.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=s3-tp-topcv%2F20260111%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260111T081453Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Signature=880aa6f5f654f325df5b63e3c1304f089d45e9837184b2facc0245c8f7725d9e"
+              href="https://cv-web-xi-seven.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
             >
